@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:another_dashed_container/another_dashed_container.dart';
+import 'package:file_picker/file_picker.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,6 +19,22 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  void _browseFiles(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      print(file.name);
+      print(file.bytes);
+      print(file.size);
+      print(file.extension);
+      print(file.path);
+    } else {
+      // User canceled the picker
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +54,7 @@ class MyHomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Drag and drop your file here to start uploading',
+                  'Drag and drop your transaction CSV here to start uploading',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18, // Increased font size
@@ -73,17 +90,24 @@ class MyHomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 40), // Increased spacing
                 ElevatedButton(
-                  onPressed: () {
-                    // Handle file picking logic here
-                  },
+                  onPressed: () => _browseFiles(context),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
                     onPrimary: Colors.black,
                     side: const BorderSide(
-                        color: Colors.black, width: 2), // Added border
+                      color: Colors.black,
+                      width: 2,
+                    ),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 15),
-                    textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                      horizontal: 50,
+                      vertical: 15,
+                    ),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
                   ),
                   child: const Text('Browse Files'),
                 ),
