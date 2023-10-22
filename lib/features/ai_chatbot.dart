@@ -1,75 +1,98 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
 class AIChatBotPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'AI Chat UI',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ChatUIScreen(),
-    );
-  }
-}
-
-class ChatUIScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Logo Name Here'),
-        leading: CircleAvatar(
-          backgroundColor: Colors.white,
-          // You can add an image to the CircleAvatar if you have one.
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(20.0),
-            padding: EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Text('AI Chat'),
-          ),
+      body: Row(
+        children: [
           Expanded(
+            flex: 2,
             child: Container(
-              margin: EdgeInsets.all(20.0),
-              padding: EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: ListView(
+              color: Colors.white,
+              child: Column(
                 children: [
-                  // Add your chat messages here as Text widgets or custom widgets.
+                  SizedBox(height: 50.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 50.0,
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'L',
+                            style:
+                                TextStyle(fontSize: 30.0, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.0),
+                      Text(
+                        'Money Buddy',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 23,
+                          fontWeight: FontWeight
+                              .bold, // Add this line to make the text bold
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.0),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.chat_bubble, color: Colors.black),
+                        SizedBox(width: 90.0),
+                        Text(
+                          'AI Chatbot',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(20.0),
-            child: Row(
-              children: <Widget>[
+          Expanded(
+            flex: 8,
+            child: Column(
+              children: [
                 Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Ask a few questions here...',
-                      border: OutlineInputBorder(),
+                  child: Container(
+                    color: Colors
+                        .white, // Change to your preferred color or design
+                    child: ListView(
+                      children: [
+                        // Add your chat messages here
+                      ],
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    // Handle the send button press here.
-                  },
-                )
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Type your message here...',
+                    ),
+                    // Add your text field submission logic here
+                  ),
+                ),
               ],
             ),
           ),
