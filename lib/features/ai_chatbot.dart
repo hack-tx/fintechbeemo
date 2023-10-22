@@ -81,62 +81,64 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
       child: Column(
         children: [
           const SizedBox(height: 50.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 50.0,
-                height: 50.0,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                child: Center(
-                  child: Image.asset(
-                    'assets/images/money.png',
-                    width: 70.0,
-                    height: 70.0,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10.0),
-              const Text(
-                'Money Buddy',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+          _buildLogo(),
           const SizedBox(height: 20.0),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: const Color.fromRGBO(0, 191, 100, 1),
-            ),
-            child: Container(
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(14.0),
-                    child: Icon(Icons.chat_bubble, color: Colors.white),
-                  ),
-                  SizedBox(width: 20.0),
-                  Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Text(
-                      'AI Chat',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
+          _buildChatOption(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: 25.0,
+          backgroundColor: Colors.white,
+          child: Image.asset(
+            'assets/images/money.png',
+            width: 35.0,
+            height: 35.0,
+          ),
+        ),
+        const SizedBox(width: 10.0),
+        const Text(
+          'Money Buddy',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildChatOption() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: const Color.fromRGBO(0, 191, 100, 1),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(14.0),
+            child: Icon(Icons.chat_bubble, color: Colors.white),
+          ),
+          const SizedBox(width: 20.0),
+          Expanded(
+            child: const Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Text(
+                'AI Chat',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
