@@ -35,6 +35,7 @@ class _UserFlowPageState extends State<userFlowPage> {
         print('Failed to upload file.');
       }
     }
+    setState(() {});
   }
 
   @override
