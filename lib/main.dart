@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:fintechbeemo/features/ai_chatbot.dart';
 import 'package:fintechbeemo/features/user_flow.dart';
 import 'package:fintechbeemo/features/form.dart';
 import 'package:flutter/material.dart';
