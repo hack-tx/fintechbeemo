@@ -1,9 +1,45 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, use_key_in_widget_constructors, sort_child_properties_last
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+class CategoryCard extends StatelessWidget {
+  final String categoryName;
+  final double total;
+  final int count;
+  final double average;
+
+  CategoryCard({
+    required this.categoryName,
+    required this.total,
+    required this.count,
+    required this.average,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              categoryName,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text('Total: \$${total.toStringAsFixed(2)}'),
+            Text('Count: $count'),
+            Text('Average: \$${average.toStringAsFixed(2)}'),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -57,6 +93,18 @@ class _StatsPageState extends State<StatsPage> {
           Map<String, dynamic> mapData = jsonDecode(snapshot.data!);
 
           var transactions = mapData['Transactions'];
+          var summaryData = mapData['Summary'];
+
+          List<Widget> categoryCards = summaryData.entries.map<Widget>((entry) {
+            String categoryName = entry.key;
+            Map<String, dynamic> categoryData = entry.value;
+            return CategoryCard(
+              categoryName: categoryName,
+              total: categoryData['Total'],
+              count: categoryData['Count'],
+              average: categoryData['Average'],
+            );
+          }).toList();
 
           // snapshot.data;
           // If the Future is complete and no errors occurred,
@@ -86,13 +134,28 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                       Expanded(
                         flex: 2,
-                        child: Container(
-                          margin: EdgeInsets.all(5),
-                          // width: _size.width * .2,
-                          height: 200,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.grey),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(5),
+                              // width: _size.width * .2,
+                              height: 400,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[300]),
+                              child: ListView(
+                                children: categoryCards,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(5),
+                              // width: _size.width * .2,
+                              height: 400,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[300]),
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(
