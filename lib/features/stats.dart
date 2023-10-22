@@ -22,35 +22,35 @@ class StatsPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Container(
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(5),
                     // width: _size.width * .3,
                     height: 200,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    // width: _size.width * .2,
-                    height: 200,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(5),
                         color: Colors.grey),
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: Container(
-                    margin: EdgeInsets.all(10),
-                    width: _size.width * .3,
-                    height: 700,
+                    margin: EdgeInsets.all(5),
+                    // width: _size.width * .2,
+                    height: 200,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.all(5),
+                    width: _size.width * .3,
+                    height: 850,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
                         color: Colors.grey),
                   ),
                 ),
