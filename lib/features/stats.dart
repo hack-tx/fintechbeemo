@@ -138,6 +138,43 @@ class _StatsPageState extends State<StatsPage> {
     };
   }
 
+  Map<String, double> calculateBalanceAndSpending(List<dynamic> transactions) {
+    DateTime now = DateTime.now();
+    DateTime oneWeekAgo = now.subtract(Duration(days: 7));
+
+    double weeklyIncome = 0.0;
+    double weeklySpending = 0.0;
+    double totalIncome = 0.0;
+    double totalSpending = 0.0;
+
+    for (var transaction in transactions) {
+      DateTime transactionDate = DateTime.parse(transaction['Date']);
+      double amount = transaction['Amount'];
+      if (amount > 0) {
+        totalIncome += amount;
+        if (transactionDate.isAfter(oneWeekAgo) &&
+            transactionDate.isBefore(now)) {
+          weeklyIncome += amount;
+        }
+      } else {
+        totalSpending += amount;
+        if (transactionDate.isAfter(oneWeekAgo) &&
+            transactionDate.isBefore(now)) {
+          weeklySpending += amount;
+        }
+      }
+    }
+
+    double balance = totalIncome +
+        totalSpending; // since spending is negative, we use + to calculate the balance
+
+    return {
+      'Income in the last week': weeklyIncome,
+      'Spending in the last week': weeklySpending.abs(),
+      'Balance': balance,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
@@ -159,6 +196,7 @@ class _StatsPageState extends State<StatsPage> {
           var summaryData = mapData['Summary'];
           var transactionBalance = analyzeTransactions(transactions);
           var trendAnalysis = _trendAnalysis(transactions);
+          var balanceData = calculateBalanceAndSpending(transactions);
 
           List<Widget> categoryCards = summaryData.entries.map<Widget>((entry) {
             String categoryName = entry.key;
@@ -200,83 +238,134 @@ class _StatsPageState extends State<StatsPage> {
                                 borderRadius: BorderRadius.circular(5),
                                 color: Colors.grey[100],
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Spending Balance',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        'Spending Balance',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24),
+                                      ),
+                                      Divider(),
+                                      Text(
+                                        "\$${balanceData['Balance']!.toStringAsFixed(2)}",
+                                        style: TextStyle(
+                                            fontSize: 40,
+                                            fontFamily: 'BebasNeue',
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Income in the last week: ",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "\$${balanceData['Income in the last week']!.toStringAsFixed(2)}",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Spending in the last week: ",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "\$${balanceData['Spending in the last week']!.toStringAsFixed(2)}",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
+                                  SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Weekly Avg Spending: ",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "\$${transactionBalance['Weekly Spending']!.toStringAsFixed(2)}",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Earning to Spending Ratio: ",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "${transactionBalance['Earning to Spending Ratio']!.toStringAsFixed(2)}",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
 
-                                  Divider(),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Weekly Avg Spending: ",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Spending Trend: ",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "${trendAnalysis['Spending Trend']!.toString()}",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        "\$${transactionBalance['Weekly Spending']!.toStringAsFixed(2)}",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                        ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Income Trend: ",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "${trendAnalysis['Income Trend']!.toString()}",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Earning to Spending Ratio: ",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "${transactionBalance['Earning to Spending Ratio']!.toStringAsFixed(2)}",
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
 
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Spending Trend: ",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "${trendAnalysis['Spending Trend']!.toString()}",
-                                        style: TextStyle(fontSize: 18),
-                                      ),
+                                      // LineChartBalance(
+                                      //   transactions: transactions,
+                                      // )
                                     ],
                                   ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Income Trend: ",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "${trendAnalysis['Income Trend']!.toString()}",
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-
-                                  // LineChartBalance(
-                                  //   transactions: transactions,
-                                  // )
                                 ],
                               ),
                             ),
@@ -324,14 +413,14 @@ class _StatsPageState extends State<StatsPage> {
                               margin: EdgeInsets.all(5),
                               padding: EdgeInsets.all(10),
                               // width: _size.width * .2,
-                              height: 400,
+                              height: 450,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   color: Colors.grey[100]),
                               child: Container(
                                 margin: EdgeInsets.all(5),
                                 width: _size.width * .3,
-                                height: 400,
+                                height: 450,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   color: Colors.grey[100],
@@ -387,7 +476,8 @@ class _StatsPageState extends State<StatsPage> {
                           child: ListView.builder(
                             itemCount: transactions.length,
                             itemBuilder: (context, index) {
-                              final transaction = transactions[index];
+                              final transaction =
+                                  transactions[transactions.length - 1 - index];
                               return Card(
                                 elevation: 0.0,
                                 margin: EdgeInsets.all(5),

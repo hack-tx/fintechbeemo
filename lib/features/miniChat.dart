@@ -20,6 +20,14 @@ class _MiniChatState extends State<MiniChat> {
 
   var isStatementQuesiton = false;
 
+  String getTextBefore(String text) {
+    // Split the text at "###"
+    List<String> parts = text.split('###');
+
+    // Return the text before "###", or the entire text if "###" is not found
+    return parts.isNotEmpty ? parts[0] : text;
+  }
+
   Future<void> postQuestion() async {
     final url = isStatementQuesiton
         ? 'http://45.55.39.250/statement-question'
@@ -44,13 +52,13 @@ class _MiniChatState extends State<MiniChat> {
       setState(() {
         _messages.add(
           BubbleSpecialThree(
-            text: response.body,
+            text: getTextBefore(response.body),
             color: const Color.fromRGBO(1, 150, 255, 1),
             tail: true,
             isSender: false,
             textStyle: TextStyle(
                 color: Colors.white,
-                fontSize: 20), // Increase the fontSize here
+                fontSize: 17), // Increase the fontSize here
           ),
         );
       });
@@ -152,7 +160,7 @@ class _MiniChatState extends State<MiniChat> {
                           isSender: true,
                           textStyle: TextStyle(
                               color: Colors.white,
-                              fontSize: 20), // Increase the fontSize here
+                              fontSize: 17), // Increase the fontSize here
                         ),
                       );
                     },

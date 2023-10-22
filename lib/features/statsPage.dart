@@ -59,23 +59,23 @@ class _StatsPageScaffoldState extends State<StatsPageScaffold> {
     return Wrap(
       alignment: WrapAlignment.center,
       children: [
-        CircleAvatar(
-          radius: 25.0,
-          backgroundColor: Colors.white,
-          child: Image.asset(
-            'assets/images/money.png',
-            width: 35.0,
-            height: 35.0,
-          ),
-        ),
+        // CircleAvatar(
+        //   radius: 25.0,
+        //   backgroundColor: Colors.white,
+        //   child: Image.asset(
+        //     'assets/images/money.png',
+        //     width: 35.0,
+        //     height: 35.0,
+        //   ),
+        // ),
         const SizedBox(width: 10.0),
         const Text(
           'Money Buddy',
           style: TextStyle(
-            color: Colors.black,
-            fontSize: 23,
-            fontWeight: FontWeight.bold,
-          ),
+              color: Colors.black,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              fontFamily: "BebasNeue"),
         ),
       ],
     );
