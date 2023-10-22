@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:fintechbeemo/features/stats.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:http/http.dart' as http;
@@ -68,8 +69,8 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
           ],
           Expanded(
             flex: 8,
-            child: _buildChatArea(),
-            // child: StatsPage(),
+            // child: _buildChatArea(),
+            child: StatsPage(),
           ),
         ],
       ),
@@ -85,6 +86,8 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
           _buildLogo(),
           const SizedBox(height: 20.0),
           _buildChatOption(),
+          const SizedBox(height: 20.0),
+          _buildStats(false),
         ],
       ),
     );
@@ -120,7 +123,7 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
+        // borderRadius: BorderRadius.circular(10.0),
         color: const Color.fromRGBO(0, 191, 100, 1),
       ),
       child: Row(
@@ -136,6 +139,38 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
               padding: EdgeInsets.all(12.0),
               child: Text(
                 'AI Chat',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStats(bool isSelected) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      decoration: BoxDecoration(
+        // borderRadius: BorderRadius.circular(10.0),
+        color: isSelected ? Color.fromRGBO(0, 191, 100, 1) : Colors.grey[500],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(14.0),
+            child: Icon(Icons.bar_chart_sharp, color: Colors.white),
+          ),
+          const SizedBox(width: 20.0),
+          Expanded(
+            child: const Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Text(
+                'Dashboard',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

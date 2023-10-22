@@ -30,13 +30,14 @@ environment:
 dependencies:
   another_dashed_container: ^1.0.0
   chat_bubbles: ^1.5.0
+  csv: ^5.1.0
   cupertino_icons: ^1.0.2
+  fast_csv: ^0.2.9
   file_picker: ^4.2.0
   flutter:
     sdk: flutter
-  http: ^1.1.0
   flutter_tags_x: ^1.1.0
-
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
