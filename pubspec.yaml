@@ -35,6 +35,8 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.1.0
+  flutter_tags_x: ^1.1.0
+
 
 dev_dependencies:
   flutter_lints: ^2.0.0

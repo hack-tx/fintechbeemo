@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, library_private_types_in_public_api, prefer_const_declarations
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, library_private_types_in_public_api, prefer_const_declarations, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'dart:convert';
 
-import 'package:fintechbeemo/features/stats.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:http/http.dart' as http;
@@ -69,8 +68,8 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
           ],
           Expanded(
             flex: 8,
-            // child: _buildChatArea(),
-            child: StatsPage(),
+            child: _buildChatArea(),
+            // child: StatsPage(),
           ),
         ],
       ),
