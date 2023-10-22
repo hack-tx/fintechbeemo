@@ -20,14 +20,17 @@ class _UserFlowPageState extends State<userFlowPage> {
 
     if (result != null) {
       _fileUploadFuture = Future.value(result);
-      File file = File(result.files.single.path!);
+
+      // File file = File(result.files.single.path!);
+      final fileBytes = result.files.first.bytes;
+      final fileName = result.files.first.name;
 
       // Send the file to the FastAPI endpoint
       var request = http.MultipartRequest(
           'POST', Uri.parse('http://45.55.39.250/upload-csv'));
-      request.files.add(http.MultipartFile(
-          'file', file.readAsBytes().asStream(), file.lengthSync(),
-          filename: file.path.split("/").last));
+      request.files.add(http.MultipartFile.fromBytes(
+          'file', fileBytes!.toList(),
+          filename: fileName));
       var response = await request.send();
       if (response.statusCode == 200) {
         print('File uploaded successfully!');
