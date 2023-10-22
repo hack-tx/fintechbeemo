@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:fintechbeemo/features/stats.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:http/http.dart' as http;
@@ -60,7 +61,7 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
     return Scaffold(
       body: Row(
         children: [
-          if (screenSize.width > 600) ...[
+          if (screenSize.width > 1050) ...[
             Expanded(
               flex: 2,
               child: _buildSideMenu(),
@@ -68,7 +69,8 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
           ],
           Expanded(
             flex: 8,
-            child: _buildChatArea(),
+            // child: _buildChatArea(),
+            child: StatsPage(),
           ),
         ],
       ),
@@ -152,22 +154,27 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
+            child: Container(
+          color: Colors.grey[200],
+          child: Expanded(
             child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _messages.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: _messages[index].isSender
-                    ? MainAxisAlignment.end
-                    : MainAxisAlignment.start,
-                children: [
-                  Flexible(child: _messages[index]),
-                ],
-              ),
-            );
-          },
+              shrinkWrap: true,
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: _messages[index].isSender
+                        ? MainAxisAlignment.end
+                        : MainAxisAlignment.start,
+                    children: [
+                      Flexible(child: _messages[index]),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         )),
         Container(
           padding: EdgeInsets.all(10.0),
