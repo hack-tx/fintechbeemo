@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, use_key_in_widget_constructors, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, use_key_in_widget_constructors, sort_child_properties_last, unnecessary_string_interpolations
 
 import 'dart:convert';
 
+import 'package:fintechbeemo/features/linechart.dart';
+import 'package:fintechbeemo/features/miniChat.dart';
 import 'package:fintechbeemo/features/pieChart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -76,6 +78,66 @@ class _StatsPageState extends State<StatsPage> {
     }
   }
 
+  Map<String, dynamic> _trendAnalysis(transactions) {
+    // Assume transactions are sorted by date
+    final monthlySpending = <String, double>{};
+    final monthlyIncome = <String, double>{};
+
+    for (var transaction in transactions) {
+      final date = DateTime.parse(transaction['Date']);
+      final month = '${date.year}-${date.month.toString().padLeft(2, '0')}';
+      final amount = transaction['Amount'];
+
+      if (amount > 0) {
+        monthlyIncome[month] = (monthlyIncome[month] ?? 0) + amount;
+      } else {
+        monthlySpending[month] = (monthlySpending[month] ?? 0) - amount;
+      }
+    }
+
+    // Check if spending and income are increasing or decreasing
+    final spendingTrend =
+        monthlySpending.values.last > monthlySpending.values.first
+            ? 'Increasing'
+            : 'Decreasing';
+    final incomeTrend = monthlyIncome.values.last > monthlyIncome.values.first
+        ? 'Increasing'
+        : 'Decreasing';
+
+    return {
+      'Spending Trend': spendingTrend,
+      'Income Trend': incomeTrend,
+    };
+  }
+
+  Map<String, double> analyzeTransactions(transactions) {
+    double totalSpending = 0;
+    double totalEarning = 0;
+    DateTime startDate = DateTime.parse(transactions.first['Date']);
+    DateTime endDate = DateTime.parse(transactions.last['Date']);
+
+    for (var transaction in transactions) {
+      double amount = transaction['Amount'];
+      if (amount > 0) {
+        totalEarning += amount;
+      } else {
+        totalSpending +=
+            -amount; // Convert negative spending to positive for summation
+      }
+    }
+
+    int numDays = endDate.difference(startDate).inDays + 1;
+    int numWeeks = (numDays / 7).ceil();
+    double weeklySpending = totalSpending / numWeeks;
+    double earningSpendingRatio =
+        totalEarning / (totalSpending == 0 ? 1 : totalSpending);
+
+    return {
+      'Weekly Spending': weeklySpending,
+      'Earning to Spending Ratio': earningSpendingRatio,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     var _size = MediaQuery.of(context).size;
@@ -95,6 +157,8 @@ class _StatsPageState extends State<StatsPage> {
 
           var transactions = mapData['Transactions'];
           var summaryData = mapData['Summary'];
+          var transactionBalance = analyzeTransactions(transactions);
+          var trendAnalysis = _trendAnalysis(transactions);
 
           List<Widget> categoryCards = summaryData.entries.map<Widget>((entry) {
             String categoryName = entry.key;
@@ -124,13 +188,109 @@ class _StatsPageState extends State<StatsPage> {
                     children: [
                       Expanded(
                         flex: 4,
-                        child: Container(
-                          margin: EdgeInsets.all(5),
-                          // width: _size.width * .3,
-                          height: 200,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.grey),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(10),
+                              // width: _size.width * .3,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.grey[100],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Spending Balance',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
+                                  ),
+
+                                  Divider(),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Weekly Avg Spending: ",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "\$${transactionBalance['Weekly Spending']!.toStringAsFixed(2)}",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Earning to Spending Ratio: ",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "${transactionBalance['Earning to Spending Ratio']!.toStringAsFixed(2)}",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Spending Trend: ",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "${trendAnalysis['Spending Trend']!.toString()}",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Income Trend: ",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "${trendAnalysis['Income Trend']!.toString()}",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
+
+                                  // LineChartBalance(
+                                  //   transactions: transactions,
+                                  // )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(5),
+                              // width: _size.width * .3,
+                              height: MediaQuery.of(context).size.width * .38,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey),
+
+                              child: MiniChat(),
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(
@@ -149,7 +309,7 @@ class _StatsPageState extends State<StatsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Top Transactions',
+                                    'Top Categories',
                                     style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold),
