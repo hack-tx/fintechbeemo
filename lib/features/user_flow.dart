@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:another_dashed_container/another_dashed_container.dart';
 import 'package:file_picker/file_picker.dart';
+import 'ai_chatbot.dart';
 
 class userFlowPage extends StatefulWidget {
   @override
@@ -26,18 +27,31 @@ class _UserFlowPageState extends State<userFlowPage> {
           future: _fileUploadFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Show loading indicator during file upload
+              return CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}'); // Show error if any
+              return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
               PlatformFile file = snapshot.data!.files.first;
-              return Row(
+              return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(file.name),
-                  Icon(Icons.check,
-                      color: Colors
-                          .green), // Show checkmark when file upload is complete
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(file.name),
+                      Icon(Icons.check, color: Colors.green),
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AIChatBotPage()),
+                      );
+                    },
+                    child: Text('Start Analysis'),
+                  ),
                 ],
               );
             } else {
