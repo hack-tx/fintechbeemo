@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, use_key_in_widget_constructors, camel_case_types, unused_local_variable
 
+import 'package:fintechbeemo/features/statsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:another_dashed_container/another_dashed_container.dart';
 import 'package:file_picker/file_picker.dart';
@@ -68,7 +69,7 @@ class _UserFlowPageState extends State<userFlowPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AIChatBotPage()),
+                            builder: (context) => StatsPageScaffold()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

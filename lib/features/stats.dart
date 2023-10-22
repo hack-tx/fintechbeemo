@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:fintechbeemo/features/pieChart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -133,27 +134,31 @@ class _StatsPageState extends State<StatsPage> {
                         ),
                       ),
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Column(
                           children: [
                             Container(
                               margin: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(10),
                               // width: _size.width * .2,
                               height: 400,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
-                                  color: Colors.grey[300]),
-                              child: ListView(
-                                children: categoryCards,
+                                  color: Colors.grey[100]),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Top Transactions',
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  PieChartTransactions(
+                                    summaryData: summaryData,
+                                  ),
+                                ],
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.all(5),
-                              // width: _size.width * .2,
-                              height: 400,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.grey[300]),
                             ),
                           ],
                         ),
@@ -166,44 +171,56 @@ class _StatsPageState extends State<StatsPage> {
                           height: 850,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
-                              color: Colors.grey[300]),
+                              color: Colors.grey[100]),
                           child: ListView.builder(
                             itemCount: transactions.length,
                             itemBuilder: (context, index) {
                               final transaction = transactions[index];
                               return Card(
+                                elevation: 0.0,
                                 margin: EdgeInsets.all(5),
                                 child: ListTile(
+                                  tileColor: Colors.grey[100],
                                   title: Text(transaction['Description']),
-                                  subtitle: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  subtitle: Column(
                                     children: [
-                                      Column(
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text('${transaction['Date']}'),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text('${transaction['Date']}'),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                '\$${transaction['Amount']}',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 25,
+                                                    color:
+                                                        transaction['Amount'] <
+                                                                0
+                                                            ? Colors.red
+                                                            : Colors.green),
+                                              ),
+                                              Text(
+                                                  '${transaction['Category']}'),
+                                            ],
+                                          ),
                                         ],
                                       ),
-                                      Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              '\$${transaction['Amount']}',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 25,
-                                                  color:
-                                                      transaction['Amount'] < 0
-                                                          ? Colors.red
-                                                          : Colors.green),
-                                            ),
-                                            Text('${transaction['Category']}'),
-                                          ]),
+                                      Divider(
+                                        thickness: 1,
+                                      )
                                     ],
                                   ),
                                 ),

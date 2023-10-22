@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, library_private_types_in_public_api, prefer_const_declarations, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, library_private_types_in_public_api, prefer_const_declarations, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sort_child_properties_last, deprecated_member_use
 
 import 'dart:convert';
 
 import 'package:fintechbeemo/features/stats.dart';
+import 'package:fintechbeemo/features/statsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:http/http.dart' as http;
@@ -16,8 +17,13 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
   final List<BubbleSpecialThree> _messages = [];
   final TextEditingController _controller = TextEditingController();
 
+  var isStatementQuesiton = false;
+
   Future<void> postQuestion() async {
-    final url = 'http://45.55.39.250/statement-question';
+    final url = isStatementQuesiton
+        ? 'http://45.55.39.250/statement-question'
+        : 'http://45.55.39.250/profile-question';
+
     final headers = {
       'Content-Type': 'application/json',
       'accept': 'application/json',
@@ -69,8 +75,8 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
           ],
           Expanded(
             flex: 8,
-            // child: _buildChatArea(),
-            child: StatsPage(),
+            child: _buildChatArea(),
+            // child: StatsPage(),
           ),
         ],
       ),
@@ -152,33 +158,49 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
   }
 
   Widget _buildStats(bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      decoration: BoxDecoration(
-        // borderRadius: BorderRadius.circular(10.0),
-        color: isSelected ? Color.fromRGBO(0, 191, 100, 1) : Colors.grey[500],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(14.0),
-            child: Icon(Icons.bar_chart_sharp, color: Colors.white),
-          ),
-          const SizedBox(width: 20.0),
-          Expanded(
-            child: const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Text(
-                'Dashboard',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+    return InkWell(
+      onTap: () {
+        setState(() {
+          Navigator.of(context).pop();
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, _, __) {
+                return StatsPageScaffold();
+              },
+              transitionDuration: Duration(seconds: 0),
+            ),
+          );
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        decoration: BoxDecoration(
+          // borderRadius: BorderRadius.circular(10.0),
+          color: isSelected ? Color.fromRGBO(0, 191, 100, 1) : Colors.grey[500],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(14.0),
+              child: Icon(Icons.bar_chart_sharp, color: Colors.white),
+            ),
+            const SizedBox(width: 20.0),
+            Expanded(
+              child: const Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Text(
+                  'Dashboard',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -190,24 +212,62 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
         Expanded(
             child: Container(
           color: Colors.grey[200],
-          child: Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Row(
-                    mainAxisAlignment: _messages[index].isSender
-                        ? MainAxisAlignment.end
-                        : MainAxisAlignment.start,
-                    children: [
-                      Flexible(child: _messages[index]),
-                    ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _messages.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        mainAxisAlignment: _messages[index].isSender
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        children: [
+                          Flexible(child: _messages[index]),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    isStatementQuesiton = !isStatementQuesiton;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  onPrimary: Colors.black,
+                  side: BorderSide(
+                    color: Colors.black,
+                    width: 2,
                   ),
-                );
-              },
-            ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 50,
+                    vertical: 15,
+                  ),
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                child: Text(
+                  !isStatementQuesiton
+                      ? 'Inlcude Statement'
+                      : 'Uninlcude Statement',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
           ),
         )),
         Container(

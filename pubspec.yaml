@@ -34,6 +34,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   fast_csv: ^0.2.9
   file_picker: ^4.2.0
+  fl_chart: ^0.64.0
   flutter:
     sdk: flutter
   flutter_tags_x: ^1.1.0
