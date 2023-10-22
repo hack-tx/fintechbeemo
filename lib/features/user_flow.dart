@@ -50,7 +50,25 @@ class _UserFlowPageState extends State<userFlowPage> {
                             builder: (context) => AIChatBotPage()),
                       );
                     },
-                    child: Text('Start Analysis'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      onPrimary: Colors.black,
+                      side: const BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50,
+                        vertical: 15,
+                      ),
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                    ),
+                    child: const Text('Start Analysis'),
                   ),
                 ],
               );
@@ -132,7 +150,7 @@ class _UserFlowPageState extends State<userFlowPage> {
                             borderRadius: BorderRadius.circular(0),
                           ),
                         ),
-                        child: const Text('Browse Files'),
+                        child: const Text('Start Analysis'),
                       ),
                     ],
                   ),
