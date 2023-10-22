@@ -24,10 +24,10 @@ class AIChatBotPage extends StatelessWidget {
                           color: Colors.white,
                         ),
                         child: Center(
-                          child: Text(
-                            'L',
-                            style:
-                                TextStyle(fontSize: 30.0, color: Colors.black),
+                          child: Image.asset(
+                            'assets/images/money.png',
+                            width: 30.0,
+                            height: 30.0,
                           ),
                         ),
                       ),
