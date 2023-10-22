@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, use_key_in_widget_constructors, camel_case_types, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:another_dashed_container/another_dashed_container.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
 import 'ai_chatbot.dart';
+import 'dart:io';
 
 class userFlowPage extends StatefulWidget {
   @override
@@ -13,10 +17,24 @@ class _UserFlowPageState extends State<userFlowPage> {
 
   void _browseFiles(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
+
     if (result != null) {
       _fileUploadFuture = Future.value(result);
+      File file = File(result.files.single.path!);
+
+      // Send the file to the FastAPI endpoint
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('http://localhost:8801/upload-csv'));
+      request.files.add(http.MultipartFile(
+          'file', file.readAsBytes().asStream(), file.lengthSync(),
+          filename: file.path.split("/").last));
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        print('File uploaded successfully!');
+      } else {
+        print('Failed to upload file.');
+      }
     }
-    setState(() {});
   }
 
   @override
