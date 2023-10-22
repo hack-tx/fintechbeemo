@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:chat_bubbles/chat_bubbles.dart';
 
-class AIChatBotPage extends StatelessWidget {
+class AIChatBotPage extends StatefulWidget {
+  @override
+  _AIChatBotPageState createState() => _AIChatBotPageState();
+}
+
+class _AIChatBotPageState extends State<AIChatBotPage> {
+  final List<BubbleSpecialThree> _messages = [];
+  final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,17 +18,17 @@ class AIChatBotPage extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              margin: EdgeInsets.only(right: 10.0),
+              margin: const EdgeInsets.only(right: 10.0),
               child: Column(
                 children: [
-                  SizedBox(height: 50.0),
+                  const SizedBox(height: 50.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         width: 50.0,
                         height: 50.0,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
                         ),
@@ -31,8 +40,8 @@ class AIChatBotPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10.0),
-                      Text(
+                      const SizedBox(width: 10.0),
+                      const Text(
                         'Money Buddy',
                         style: TextStyle(
                           color: Colors.black,
@@ -42,27 +51,27 @@ class AIChatBotPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 5.0, vertical: 0.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color: Color.fromRGBO(0, 191, 100, 1),
+                      color: const Color.fromRGBO(0, 191, 100, 1),
                     ),
                     child: Container(
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(14.0),
+                            padding: EdgeInsets.all(14.0),
                             child: Icon(Icons.chat_bubble, color: Colors.white),
                           ),
                           SizedBox(width: 20.0),
                           Padding(
-                            padding: const EdgeInsets.all(12.0),
+                            padding: EdgeInsets.all(12.0),
                             child: Text(
-                              'AI Chatbot',
+                              'AI Chat',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -80,26 +89,49 @@ class AIChatBotPage extends StatelessWidget {
           Expanded(
             flex: 8,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Expanded(
-                  child: Container(
-                    color: Colors
-                        .white, // Change to your preferred color or design
-                    child: ListView(
-                      children: [
-                        // Add your chat messages here
-                      ],
-                    ),
-                  ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _messages.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        mainAxisAlignment: _messages[index].isSender
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        children: [
+                          _messages[index],
+                        ],
+                      ),
+                    );
+                  },
                 ),
                 Container(
                   padding: EdgeInsets.all(10.0),
                   child: TextField(
+                    controller: _controller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Type your message here...',
                     ),
-                    // Add your text field submission logic here
+                    onSubmitted: (value) {
+                      setState(() {
+                        _messages.add(
+                          BubbleSpecialThree(
+                            text: value,
+                            color: const Color.fromRGBO(0, 191, 100, 1),
+                            tail: true,
+                            isSender: true,
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30), // Increase the fontSize here
+                          ),
+                        );
+                      });
+                      _controller.clear();
+                    },
                   ),
                 ),
               ],
