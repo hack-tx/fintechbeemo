@@ -149,7 +149,8 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        ListView.builder(
+        Expanded(
+            child: ListView.builder(
           shrinkWrap: true,
           itemCount: _messages.length,
           itemBuilder: (context, index) {
@@ -160,12 +161,12 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
                     ? MainAxisAlignment.end
                     : MainAxisAlignment.start,
                 children: [
-                  _messages[index],
+                  Flexible(child: _messages[index]),
                 ],
               ),
             );
           },
-        ),
+        )),
         Container(
           padding: EdgeInsets.all(10.0),
           child: TextField(
