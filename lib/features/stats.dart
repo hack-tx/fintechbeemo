@@ -320,6 +320,58 @@ class _StatsPageState extends State<StatsPage> {
                                 ],
                               ),
                             ),
+                            Container(
+                              margin: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(10),
+                              // width: _size.width * .2,
+                              height: 400,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[100]),
+                              child: Container(
+                                margin: EdgeInsets.all(5),
+                                width: _size.width * .3,
+                                height: 400,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[100],
+                                ),
+                                child: ListView.builder(
+                                  itemCount: summaryData.keys.length,
+                                  itemBuilder: (context, index) {
+                                    final category =
+                                        summaryData.keys.elementAt(index);
+                                    final data = summaryData[category]!;
+                                    return Card(
+                                      elevation: 0.0,
+                                      margin: EdgeInsets.all(5),
+                                      child: ListTile(
+                                        tileColor: Colors.grey[100],
+                                        title: Text(category),
+                                        subtitle: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    'Total: \$${data['Total'].toStringAsFixed(2)}'),
+                                                Text(
+                                                    'Count: ${data['Count'].toStringAsFixed(2)}'),
+                                                Text(
+                                                    'Average: \$${data['Average'].toStringAsFixed(2)}'),
+                                              ],
+                                            ),
+                                            Divider(thickness: 1)
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
