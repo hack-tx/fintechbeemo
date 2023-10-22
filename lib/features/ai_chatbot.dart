@@ -9,7 +9,7 @@ class AIChatBotPage extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              color: Colors.white,
+              margin: EdgeInsets.only(right: 10.0),
               child: Column(
                 children: [
                   SizedBox(height: 50.0),
@@ -26,8 +26,8 @@ class AIChatBotPage extends StatelessWidget {
                         child: Center(
                           child: Image.asset(
                             'assets/images/money.png',
-                            width: 30.0,
-                            height: 30.0,
+                            width: 70.0,
+                            height: 70.0,
                           ),
                         ),
                       ),
@@ -37,31 +37,40 @@ class AIChatBotPage extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 23,
-                          fontWeight: FontWeight
-                              .bold, // Add this line to make the text bold
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(height: 20.0),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.white,
+                      color: Color.fromRGBO(0, 191, 100, 1),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.chat_bubble, color: Colors.black),
-                        SizedBox(width: 90.0),
-                        Text(
-                          'AI Chatbot',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ],
+                    child: Container(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(14.0),
+                            child: Icon(Icons.chat_bubble, color: Colors.white),
+                          ),
+                          SizedBox(width: 20.0),
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Text(
+                              'AI Chatbot',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
