@@ -1,5 +1,10 @@
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, library_private_types_in_public_api, prefer_const_declarations
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
+import 'package:http/http.dart' as http;
 
 class AIChatBotPage extends StatefulWidget {
   @override
@@ -9,6 +14,44 @@ class AIChatBotPage extends StatefulWidget {
 class _AIChatBotPageState extends State<AIChatBotPage> {
   final List<BubbleSpecialThree> _messages = [];
   final TextEditingController _controller = TextEditingController();
+
+  Future<void> postQuestion() async {
+    final url = 'http://45.55.39.250/statement-question';
+    final headers = {
+      'Content-Type': 'application/json',
+      'accept': 'application/json',
+    };
+    final body = jsonEncode({'question': _controller.text});
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      // If the server returns an OK response, parse the JSON
+      print('Response data: ${response.body}');
+
+      setState(() {
+        _messages.add(
+          BubbleSpecialThree(
+            text: response.body,
+            color: const Color.fromRGBO(1, 150, 255, 1),
+            tail: true,
+            isSender: false,
+            textStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 20), // Increase the fontSize here
+          ),
+        );
+      });
+    } else {
+      // If the server did not return a 200 OK response,
+      // throw an exception.
+      throw Exception('Failed to post question');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +175,7 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
               hintText: 'Type your message here...',
             ),
             onSubmitted: (value) {
+              postQuestion();
               setState(() {
                 _messages.add(
                   BubbleSpecialThree(
@@ -141,7 +185,7 @@ class _AIChatBotPageState extends State<AIChatBotPage> {
                     isSender: true,
                     textStyle: TextStyle(
                         color: Colors.white,
-                        fontSize: 30), // Increase the fontSize here
+                        fontSize: 20), // Increase the fontSize here
                   ),
                 );
               });

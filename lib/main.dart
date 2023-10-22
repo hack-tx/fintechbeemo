@@ -1,6 +1,6 @@
+import 'package:fintechbeemo/features/ai_chatbot.dart';
 import 'package:fintechbeemo/features/user_flow.dart';
 import 'package:flutter/material.dart';
-import 'package:fintechbeemo/features/ai_chatbot.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: (userFlowPage()), // Use the AiChatbotPage as the home page
+      home: (AIChatBotPage()), // Use the AiChatbotPage as the home page
     );
   }
 }
